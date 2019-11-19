@@ -75,6 +75,9 @@ func checkTarget(target Target, infos []StockInfo) {
 		if target.noticeType == "UP" && target.price <= info.currentValue {
 			notice(fmt.Sprintf(":arrow_up: %s %d [%f (%f%%)]",
 				info.name, info.currentValue, info.changeAmount, info.changeRate))
+		} else if target.noticeType == "DOWN" && target.price >= info.currentValue {
+			notice(fmt.Sprintf(":arrow_down: %s %d [%f (%f%%)]",
+				info.name, info.currentValue, info.changeAmount, info.changeRate))
 		}
 	}
 }
