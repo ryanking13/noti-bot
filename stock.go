@@ -67,12 +67,10 @@ func poll(codes []string) ([]StockInfo, error) {
 		startValue := int(data["ov"].(float64))
 		prevValue := int(data["pcv"].(float64))
 
-		dir := data["mt"].(string)
 		changeAmount := data["cv"].(float64)
 		changeRate := data["cr"].(float64)
 
-		// dir: 1(-) / 2(+)
-		if dir == "1" {
+		if currentValue-lowestValue < 0 {
 			changeAmount = -changeAmount
 			changeRate = -changeRate
 		}
