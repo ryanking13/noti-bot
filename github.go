@@ -35,13 +35,17 @@ import (
 
 // }
 
-func getIssue(user string, repo string, issueId int, token string) (*string, error) {
+func getIssue(user string, repo string, issueID int, token string) (*string, error) {
 	ctx := context.Background()
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: token},
 	)
 	tc := oauth2.NewClient(ctx, ts)
 	client := github.NewClient(tc)
-	issue, _, err := client.Issues.Get(ctx, user, repo, issueId)
-	return issue.Body, err
+	issue, _, err := client.Issues.Get(ctx, user, repo, issueID)
+	if err != nil {
+		return nil, err
+	}
+
+	return issue.Body, nil
 }
