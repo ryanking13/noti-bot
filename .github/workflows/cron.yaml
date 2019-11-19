@@ -1,0 +1,36 @@
+name: Check Stock
+
+on:
+  schedule:
+  - cron: "0/10 0-7 * * 1-5"
+
+jobs:
+  run:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set up Go 1.13
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.13
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v1
+
+    - name: Get dependencies
+      run: |
+        go get -v -t -d ./...
+
+    - name: Build
+      run: go build -v .
+    
+    - name: Run
+      env:
+        GITHUB_REPO_OWNER: ${{ secrets.GITHUB_REPO_OWNER }}
+        GITHUB_REPO_NAME: ${{ secrets.GITHUB_REPO_NAME }}
+        GITHUB_ISSUE_ID: ${{ secrets.GITHUB_ISSUE_ID }}
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      run: ./noti-bot
