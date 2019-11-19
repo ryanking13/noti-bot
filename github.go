@@ -7,11 +7,12 @@ package main
 
 import (
 	"context"
+
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
 )
-// const GITHUB_API_HOST = "https://api.github.com"
 
+// const GITHUB_API_HOST = "https://api.github.com"
 
 // func getIssue(repo string, issueId int, token string) (string, error) {
 // 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/%s/issues/%d", GITHUB_API_HOST, repo, issueId), nil)
@@ -31,7 +32,7 @@ import (
 // }
 
 // func getTargets(repo string, issueId int, token string) {
-	
+
 // }
 
 func getIssue(user string, repo string, issueId int, token string) (*string, error) {

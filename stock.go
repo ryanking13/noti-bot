@@ -12,7 +12,7 @@ import (
 	"golang.org/x/text/transform"
 )
 
-const POLL_URL string = "https://polling.finance.naver.com/api/realtime.nhn"
+const pollURL string = "https://polling.finance.naver.com/api/realtime.nhn"
 
 type StockInfo struct {
 	name         string
@@ -26,7 +26,7 @@ type StockInfo struct {
 	changeRate   float64
 }
 
-func EUCKR2UTF8(s []byte) []byte {
+func euckr2utf8(s []byte) []byte {
 	utf8Reader := transform.NewReader(bytes.NewReader(s), korean.EUCKR.NewDecoder())
 	decodedBytes, _ := ioutil.ReadAll(utf8Reader)
 	return decodedBytes
@@ -36,7 +36,7 @@ func poll(codes []string) ([]StockInfo, error) {
 	param := req.Param{
 		"query": fmt.Sprintf("SERVICE_ITEM:%s", strings.Join(codes, ",")),
 	}
-	resp, err := req.Get(POLL_URL, param)
+	resp, err := req.Get(pollURL, param)
 	if err != nil {
 		return nil, err
 	}
@@ -49,8 +49,7 @@ func poll(codes []string) ([]StockInfo, error) {
 		return nil, err
 	}
 
-	// fmt.Println(string(EUCKR2UTF8(b)))
-	json.Unmarshal(EUCKR2UTF8(b), &dat)
+	json.Unmarshal(euckr2utf8(b), &dat)
 
 	result := dat["result"].(map[string]interface{})
 	areas := result["areas"].([]interface{})
